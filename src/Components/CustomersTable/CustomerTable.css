@@ -1,0 +1,11 @@
+.grid-layout {
+  margin-top: 5rem;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.grid-wrapper {
+  width: 85vw;
+  height: 30rem;
+}
