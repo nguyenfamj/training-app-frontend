@@ -1,12 +1,17 @@
 import React from 'react';
 import CustomersTable from '../../Components/CustomersTable/CustomersTable';
 
-const Cusomters = () => {
+import './Customers.css';
+
+const Customers = () => {
   return (
-    <div>
+    <div className='page-container'>
+      <div>
+        <h3 className='heading'>Customers</h3>
+      </div>
       <CustomersTable />
     </div>
   );
 };
 
-export default Cusomters;
+export default Customers;

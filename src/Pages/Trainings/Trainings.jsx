@@ -3,7 +3,10 @@ import TrainingsTable from '../../Components/TrainingsTable/TrainingsTable';
 
 const Trainings = () => {
   return (
-    <div>
+    <div className='page-container'>
+      <div>
+        <h3 className='heading'>Trainings</h3>
+      </div>
       <TrainingsTable />
     </div>
   );

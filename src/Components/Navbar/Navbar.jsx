@@ -139,7 +139,7 @@ export default function Navbar() {
       <Box sx={{ display: 'flex', overflow: 'hidden' }}>
         <CssBaseline />
         <ThemeProvider theme={navTheme}>
-          <AppBar position='relative' open={open}>
+          <AppBar position='relative' open={open} sx={{ textAlign: 'center' }}>
             <Toolbar>
               <IconButton
                 color='primary'

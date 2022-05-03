@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import { useTrainingsQuery } from '../../Services/trainingsAPI';
+import { useSingleCustomerQuery } from '../../Services/customersAPI';
+
 import { DataGrid } from '@mui/x-data-grid';
 
 // CSS
@@ -12,9 +14,14 @@ import { CircularProgress } from '@mui/material';
 // Date formatting
 import { format } from 'date-fns';
 
+const CustomerCell = ({ queryKey, customerUrl }) => {
+  const { data, isSuccess } = useSingleCustomerQuery(queryKey, customerUrl);
+
+  return isSuccess && <>{`${data.firstname} ${data.lastname}`}</>;
+};
+
 const TrainingsTable = () => {
   const { data, isSuccess } = useTrainingsQuery();
-  console.log(data);
 
   const [pageSize, setPageSize] = useState(7);
 
@@ -22,12 +29,21 @@ const TrainingsTable = () => {
     {
       field: 'date',
       headerName: 'Date',
+      type: 'date',
       width: 200,
       renderCell: (cell) => {
         return <>{format(new Date(cell.value), 'dd/MM/yyyy')}</>;
       },
-      editable: false,
+      editable: true,
       headerClassName: 'grid-header',
+    },
+    {
+      field: 'name',
+      width: 150,
+      headerName: 'Name',
+      headerClassName: 'grid-header',
+      editable: false,
+      renderCell: (cell) => <CustomerCell queryKey={cell?.row.date} customerUrl={cell.id} />,
     },
     {
       field: 'activity',
@@ -53,7 +69,7 @@ const TrainingsTable = () => {
           <DataGrid
             columns={columns}
             rows={data?.content}
-            getRowId={(row) => (row.internalId = row.links[1].href)}
+            getRowId={(row) => (row.internalId = row.links[2].href)}
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[7, 15]}
