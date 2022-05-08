@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
-import { useCustomersQuery } from '../../Services/customersAPI';
+import { useCustomersQuery, useCustomerDelete } from '../../Services/customersAPI';
 import { DataGrid } from '@mui/x-data-grid';
 import CustomerForm from '../CustomerForm/CustomerForm';
+import TrainingForm from '../TrainingForm/TrainingForm';
+import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 
 // CSS
 import './CustomerTable.css';
@@ -11,10 +13,14 @@ import './CustomerTable.css';
 import { CircularProgress, Button, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
+// Import date formatting
+import { format } from 'date-fns';
+
 const CustomersTable = () => {
   const { data, isSuccess } = useCustomersQuery();
-
   const [pageSize, setPageSize] = useState(7);
+
+  const deleteCustomer = useCustomerDelete();
 
   // Handle Form State
   const [formStates, setFormStates] = useState({
@@ -29,6 +35,25 @@ const CustomersTable = () => {
       postcode: '',
       city: '',
     },
+  });
+
+  const [trainingForm, setTrainingForm] = useState({
+    type: '',
+    open: false,
+    initialData: {
+      date: new Date(),
+      activity: '',
+      duration: 0,
+      customer: '',
+    },
+  });
+
+  // Handle Confirm Dialog State
+  const [confirmDialog, setConfirmDialog] = useState({
+    title: '',
+    confirmMessage: '',
+    open: false,
+    onConfirm: () => {},
   });
 
   // Click event ("Edit" button)
@@ -58,6 +83,20 @@ const CustomersTable = () => {
     });
   };
 
+  // Click event ("Add training" button)
+  const handleAddTrainingButton = (customerUrl) => [
+    setTrainingForm({
+      type: 'add',
+      open: true,
+      initialData: {
+        date: format(new Date(), 'yyyy-MM-dd'),
+        activity: '',
+        duration: '',
+        customer: customerUrl,
+      },
+    }),
+  ];
+
   // Handle close form
   const handleCloseForm = () => {
     setFormStates({
@@ -72,6 +111,30 @@ const CustomersTable = () => {
         postcode: '',
         city: '',
       },
+    });
+  };
+
+  // Handle close training form
+  const handleCloseTraining = () => {
+    setTrainingForm({
+      type: '',
+      open: false,
+      initialData: {
+        date: '',
+        activity: '',
+        duration: 0,
+        customer: '',
+      },
+    });
+  };
+
+  // Handle close confirm dialog
+  const handleCloseConfirm = () => {
+    setConfirmDialog({
+      title: '',
+      confirmMessage: '',
+      open: false,
+      onConfirm: () => {},
     });
   };
 
@@ -104,9 +167,15 @@ const CustomersTable = () => {
     {
       field: 'training_add',
       headerName: '',
-      renderCell: ({ id, row }) => {
+      renderCell: ({ id }) => {
         return (
-          <Button key={id} variant='outlined'>
+          <Button
+            key={id}
+            variant='outlined'
+            onClick={() => {
+              handleAddTrainingButton(id);
+            }}
+          >
             Add training
           </Button>
         );
@@ -126,6 +195,31 @@ const CustomersTable = () => {
             }}
           >
             Edit
+          </Button>
+        );
+      },
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      renderCell: ({ id }) => {
+        return (
+          <Button
+            key={id}
+            variant='contained'
+            sx={{ bgcolor: 'crimson' }}
+            onClick={() => {
+              setConfirmDialog({
+                title: 'Delete customer',
+                confirmMessage: 'Do you want to delete this customer?',
+                open: true,
+                onConfirm: () => {
+                  deleteCustomer.mutate({ customerUrl: id });
+                },
+              });
+            }}
+          >
+            Delete
           </Button>
         );
       },
@@ -177,6 +271,17 @@ const CustomersTable = () => {
   return (
     <>
       {formStates.open && <CustomerForm {...formStates} handleCloseForm={handleCloseForm} />}
+      {trainingForm.open && (
+        <TrainingForm {...trainingForm} handleCloseForm={handleCloseTraining} />
+      )}
+      <ConfirmDialog
+        title={confirmDialog.title}
+        open={confirmDialog.open}
+        onClose={handleCloseConfirm}
+        onConfirm={confirmDialog.onConfirm}
+      >
+        {confirmDialog.confirmMessage}
+      </ConfirmDialog>
       <div className='floating-button'>
         <Fab
           color='inherit'
@@ -193,6 +298,11 @@ const CustomersTable = () => {
         <div className='grid-wrapper'>
           {isSuccess ? (
             <DataGrid
+              initialState={{
+                sorting: {
+                  sortModel: [{ field: 'firstname', sort: 'desc' }],
+                },
+              }}
               columns={columns}
               rows={data?.content}
               getRowId={(row) => (row.internalId = row.links[1].href)}

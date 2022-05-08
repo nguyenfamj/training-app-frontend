@@ -49,3 +49,18 @@ export const useCustomerAddMutation = () => {
     }
   );
 };
+
+export const useCustomerDelete = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ({ customerUrl }) => {
+      return axios.delete(customerUrl);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(CUSTOMERS_QUERY_KEY);
+      },
+    }
+  );
+};
