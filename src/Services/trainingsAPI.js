@@ -13,7 +13,7 @@ export const useTrainingsQuery = () => {
 export const useTrainingsWithCustomerQuery = () => {
   return useQuery(
     TRAININGS_QUERY_KEY,
-    async () => await (await axios.get('https://customerrest.herokuapp.com/gettrainings')).data,
+    async () => await axios.get('https://customerrest.herokuapp.com/gettrainings'),
     { refetchOnWindowFocus: false }
   );
 };

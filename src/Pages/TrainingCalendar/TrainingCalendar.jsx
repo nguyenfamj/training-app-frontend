@@ -14,7 +14,7 @@ const TrainingCalendar = () => {
   const { data, isSuccess } = useTrainingsWithCustomerQuery();
   console.log(data);
 
-  const events = data?.map((event) => ({
+  const events = data?.data.map((event) => ({
     title: `${event.activity}/${event.customer.firstname}`,
     start: event.date,
     end: add(new Date(event.date), { minutes: event.duration }),
