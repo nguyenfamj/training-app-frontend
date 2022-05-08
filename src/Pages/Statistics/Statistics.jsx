@@ -17,7 +17,7 @@ const Statistics = () => {
       <div>
         <h3 className='heading'>Statistics</h3>
       </div>
-      <ResponsiveContainer width={1000} height={600}>
+      <ResponsiveContainer width='100%' height='100%'>
         <BarChart data={chartRecords}>
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis dataKey='name' />
