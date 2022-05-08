@@ -12,6 +12,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Customers from './Pages/Customers/Customers';
 import Trainings from './Pages/Trainings/Trainings';
 import TrainingCalendar from './Pages/TrainingCalendar/TrainingCalendar';
+import Statistics from './Pages/Statistics/Statistics';
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ function App() {
           <Route path='/' element={<Customers />} />
           <Route path='/trainings' element={<Trainings />} />{' '}
           <Route path='/calendar' element={<TrainingCalendar />} />
+          <Route path='/statistics' element={<Statistics />} />
         </Routes>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

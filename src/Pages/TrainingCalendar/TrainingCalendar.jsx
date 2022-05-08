@@ -11,7 +11,7 @@ import { add } from 'date-fns';
 import { useTrainingsWithCustomerQuery } from '../../Services/trainingsAPI';
 
 const TrainingCalendar = () => {
-  const { data, isSuccess } = useTrainingsWithCustomerQuery();
+  const { data } = useTrainingsWithCustomerQuery();
   console.log(data);
 
   const events = data?.data.map((event) => ({

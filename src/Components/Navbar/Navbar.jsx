@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 // Import MaterialUI components
 import {
@@ -120,7 +121,8 @@ const navTheme = createTheme({
 const drawerNavigations = [
   { id: 1, label: 'Customers', Icon: <PersonIcon />, href: '/' },
   { id: 2, label: 'Trainings', Icon: <FitnessCenterIcon />, href: '/trainings' },
-  { id: 3, label: 'Calendar', Icon: <CalendarTodayIcon />, href: 'calendar' },
+  { id: 3, label: 'Calendar', Icon: <CalendarTodayIcon />, href: '/calendar' },
+  { id: 4, label: 'Statistics', Icon: <QueryStatsIcon />, href: '/statistics' },
 ];
 
 // Navbar
