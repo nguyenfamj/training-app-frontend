@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTrainingsQuery, useDeleteTrainingMutation } from '../../Services/trainingsAPI';
 import { useSingleCustomerQuery } from '../../Services/customersAPI';
 
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 
@@ -24,6 +24,7 @@ const CustomerCell = ({ queryKey, customerUrl }) => {
 
 const TrainingsTable = () => {
   const { data, isSuccess } = useTrainingsQuery();
+  console.log(data);
   const [pageSize, setPageSize] = useState(7);
 
   const deleteTraining = useDeleteTrainingMutation();
@@ -127,6 +128,7 @@ const TrainingsTable = () => {
                   sortModel: [{ field: 'date', sort: 'desc' }],
                 },
               }}
+              components={{ Toolbar: GridToolbar }}
               columns={columns}
               rows={data?.content}
               getRowId={(row) => (row.internalId = row.links[2].href)}

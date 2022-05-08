@@ -100,7 +100,7 @@ const CustomerForm = ({ type, open, initialData, handleCloseForm, customerUrl })
 
   return (
     <Dialog open={open} onClose={handleCloseForm}>
-      <div className='form-dialog'>
+      <div className='form-dialog-customer'>
         <DialogTitle>{type === 'edit' ? 'Edit' : type === 'add' ? 'Add' : ''} Customer</DialogTitle>
         <DialogContent>
           <DialogContentText>Add/Edit customers</DialogContentText>

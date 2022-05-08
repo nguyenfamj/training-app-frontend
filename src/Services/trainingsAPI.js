@@ -10,6 +10,14 @@ export const useTrainingsQuery = () => {
   );
 };
 
+export const useTrainingsWithCustomerQuery = () => {
+  return useQuery(
+    TRAININGS_QUERY_KEY,
+    async () => await (await axios.get('https://customerrest.herokuapp.com/gettrainings')).data,
+    { refetchOnWindowFocus: false }
+  );
+};
+
 export const useAddTrainingMutation = () => {
   const queryClient = useQueryClient();
   const config = { headers: { 'Content-Type': 'application/json' } };

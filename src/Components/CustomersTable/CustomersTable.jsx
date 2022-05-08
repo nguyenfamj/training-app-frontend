@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useCustomersQuery, useCustomerDelete } from '../../Services/customersAPI';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import CustomerForm from '../CustomerForm/CustomerForm';
 import TrainingForm from '../TrainingForm/TrainingForm';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
@@ -18,6 +18,7 @@ import { format } from 'date-fns';
 
 const CustomersTable = () => {
   const { data, isSuccess } = useCustomersQuery();
+  console.log(data);
   const [pageSize, setPageSize] = useState(7);
 
   const deleteCustomer = useCustomerDelete();
@@ -309,6 +310,7 @@ const CustomersTable = () => {
               pageSize={pageSize}
               onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
               rowsPerPageOptions={[7, 15]}
+              components={{ Toolbar: GridToolbar }}
               sx={{
                 boxShadow: 3,
                 border: 2,
